@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "KneeKlinic",
+    "slug": "kneeklinic-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#3b82f6"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kneeklinic.mobile"
+    },
+    "android": {
+      "package": "com.kneeklinic.mobile",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+    }
+  }
+}

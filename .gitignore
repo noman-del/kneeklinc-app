@@ -1,0 +1,49 @@
+# Expo
+.expo/
+dist/
+web-build/
+.expo-shared/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# macOS
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# TypeScript
+*.tsbuildinfo
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# OS
+Thumbs.db
+
+# Android
+*.apk
+*.aab
+android/app/build/
+android/.gradle/
+
+# iOS
+*.ipa
+ios/Pods/
+ios/build/
+*.xcworkspace
+!default.xcworkspace
