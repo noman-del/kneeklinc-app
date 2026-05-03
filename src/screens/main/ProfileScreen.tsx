@@ -19,6 +19,8 @@ export default function ProfileScreen({ navigation }: any) {
     email: user?.email || "",
   });
 
+  const [patientData, setPatientData] = useState({ height: "", weight: "" });
+
   // Profile picture
   const [profilePicture, setProfilePicture] = useState<string | null>(user?.profileImageUrl || null);
   const [uploadingPicture, setUploadingPicture] = useState(false);
@@ -33,6 +35,21 @@ export default function ProfileScreen({ navigation }: any) {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user?.userType !== "patient") return;
+    const load = async () => {
+      try {
+        const token = await AsyncStorage.getItem("auth_token");
+        const res = await fetch(`${API_CONFIG.BASE_URL}/patients/me`, { headers: { Authorization: `Bearer ${token}` } });
+        if (res.ok) {
+          const data = await res.json();
+          setPatientData({ height: data.patient?.height || "", weight: data.patient?.weight || "" });
+        }
+      } catch (e) {}
+    };
+    load();
+  }, [user?.userType]);
 
   const handlePickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -126,6 +143,22 @@ export default function ProfileScreen({ navigation }: any) {
     setLoading(true);
     try {
       await authApi.updateProfile(profileData);
+
+      // If patient, also update patient-specific data
+      if (user?.userType === "patient") {
+        const token = await AsyncStorage.getItem("auth_token");
+        await fetch(`${API_CONFIG.BASE_URL}/patients/me`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            height: patientData.height || null,
+            weight: patientData.weight || null,
+          }),
+        });
+      }
       await refreshUser();
       showSuccess("Profile updated successfully");
     } catch (error: any) {
@@ -228,6 +261,20 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={styles.label}>Email Address</Text>
                 <TextInput value={profileData.email} onChangeText={(value) => setProfileData({ ...profileData, email: value })} mode="outlined" keyboardType="email-address" autoCapitalize="none" style={styles.input} outlineColor="#e5e7eb" activeOutlineColor="#3b82f6" />
               </View>
+
+              {user?.userType === "patient" && (
+                <>
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Height (cm)</Text>
+                    <TextInput value={patientData.height} onChangeText={(value) => setPatientData({ ...patientData, height: value })} mode="outlined" keyboardType="numeric" placeholder="e.g., 175" style={styles.input} outlineColor="#e5e7eb" activeOutlineColor="#3b82f6" />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Weight (kg)</Text>
+                    <TextInput value={patientData.weight} onChangeText={(value) => setPatientData({ ...patientData, weight: value })} mode="outlined" keyboardType="numeric" placeholder="e.g., 70" style={styles.input} outlineColor="#e5e7eb" activeOutlineColor="#3b82f6" />
+                  </View>
+                </>
+              )}
 
               <Button mode="contained" onPress={handleProfileUpdate} loading={loading} disabled={loading} style={styles.updateButton} buttonColor="#3b82f6" icon="content-save">
                 Update Profile

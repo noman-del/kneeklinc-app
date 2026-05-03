@@ -11,6 +11,8 @@ export default function SignupScreen({ navigation }: any) {
     email: "",
     password: "",
     confirmPassword: "",
+    height: "",
+    weight: "",
   });
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +41,7 @@ export default function SignupScreen({ navigation }: any) {
   };
 
   const handleSignup = async () => {
-    const { firstName, lastName, email, password, confirmPassword } = formData;
+    const { firstName, lastName, email, password, confirmPassword, height, weight } = formData;
     const newErrors: Record<string, boolean> = {};
 
     // Validate required fields and mark errors
@@ -48,6 +50,8 @@ export default function SignupScreen({ navigation }: any) {
     if (!email) newErrors.email = true;
     if (!password) newErrors.password = true;
     if (!confirmPassword) newErrors.confirmPassword = true;
+    if (!height) newErrors.height = true;
+    if (!weight) newErrors.weight = true;
 
     setErrors(newErrors);
 
@@ -108,6 +112,11 @@ export default function SignupScreen({ navigation }: any) {
             <View style={styles.row}>
               <TextInput label="First Name *" value={formData.firstName} onChangeText={(value) => updateField("firstName", value)} mode="outlined" error={errors.firstName} style={[styles.input, styles.halfInput]} />
               <TextInput label="Last Name *" value={formData.lastName} onChangeText={(value) => updateField("lastName", value)} mode="outlined" error={errors.lastName} style={[styles.input, styles.halfInput]} />
+            </View>
+
+            <View style={styles.row}>
+              <TextInput label="Height (cm) *" value={formData.height} onChangeText={(value) => updateField("height", value)} mode="outlined" keyboardType="numeric" placeholder="e.g., 175" error={errors.height} style={[styles.input, styles.halfInput]} />
+              <TextInput label="Weight (kg) *" value={formData.weight} onChangeText={(value) => updateField("weight", value)} mode="outlined" keyboardType="numeric" placeholder="e.g., 70" error={errors.weight} style={[styles.input, styles.halfInput]} />
             </View>
 
             <TextInput label="Email *" value={formData.email} onChangeText={(value) => updateField("email", value)} mode="outlined" keyboardType="email-address" autoCapitalize="none" error={errors.email} style={styles.input} />

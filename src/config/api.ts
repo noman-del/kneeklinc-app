@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 // IMPORTANT: Set your computer's IP address here for physical device testing
 // Find your IP: Run 'ipconfig' (Windows) or 'ifconfig' (Mac/Linux)
 // Look for IPv4 Address (e.g., 192.168.1.100)
-const COMPUTER_IP = "192.168.0.116"; // Your WiFi IP address
+const COMPUTER_IP = "192.168.0.107"; // Your WiFi IP address
 
 const API_BASE_URLS = {
   // iOS Simulator - can use localhost (shares Mac's network)
