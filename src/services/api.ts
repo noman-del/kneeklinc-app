@@ -182,3 +182,39 @@ export const doctorApi = {
   getDoctor: (id: string) => apiService.get<any>(`/doctors/${id}`),
   getAvailability: (doctorId: string) => apiService.get<any>(`/doctors/${doctorId}/availability`),
 };
+
+export const iotApi = {
+  getSensorData: async (deviceIp: string) => {
+    const response = await fetch(`http://${deviceIp}/api/v1/data`);
+    if (!response.ok) throw new Error("Failed to fetch sensor data");
+    return response.json();
+  },
+  checkHealth: async (deviceIp: string) => {
+    const response = await fetch(`http://${deviceIp}/api/v1/health`);
+    if (!response.ok) throw new Error("Device health check failed");
+    return response.json();
+  },
+};
+
+export const kneeDataApi = {
+  saveKneeData: async (data: any) => apiService.post("/knee-data/save", data),
+  getMyKneeData: async (params: any = {}) => {
+    const queryParams = new URLSearchParams(params).toString();
+    return apiService.get(`/knee-data/my-data?${queryParams}`);
+  },
+  getKneeStats: async (timeRange: string = "30") => apiService.get(`/knee-data/stats?timeRange=${timeRange}`),
+  downloadCSV: async (params: any = {}) => {
+    const queryParams = new URLSearchParams(params).toString();
+    const response = await fetch(`${API_CONFIG.BASE_URL}/knee-data/download/csv?${queryParams}`);
+    if (!response.ok) throw new Error("Failed to download CSV");
+    return response.blob();
+  },
+  downloadPDF: async (params: any = {}) => {
+    const queryParams = new URLSearchParams(params).toString();
+    const response = await fetch(`${API_CONFIG.BASE_URL}/knee-data/download/pdf?${queryParams}`);
+    if (!response.ok) throw new Error("Failed to download PDF");
+    return response.blob();
+  },
+  deleteKneeData: async (id: string) => apiService.delete(`/knee-data/${id}`),
+  getDevices: async () => apiService.get("/knee-data/devices"),
+};

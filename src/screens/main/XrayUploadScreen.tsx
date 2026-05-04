@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Image, Alert } from "react-native";
+import { View, StyleSheet, ScrollView, Image, Alert, TouchableOpacity } from "react-native";
 import { Card, Text, Button, ProgressBar, Badge } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -277,6 +277,31 @@ export default function XrayUploadScreen({ navigation }: any) {
               </View>
             </View>
 
+            {/* AI Analysis Images */}
+            <View style={styles.imageSection}>
+              <Text variant="titleMedium" style={styles.sectionTitle}>
+                AI Diagnostic Heatmap
+              </Text>
+
+              {/* Heatmap */}
+              {result?.gradCamUrl && (
+                <View style={styles.imageCard}>
+                  <View style={styles.imageHeader}>
+                    <Icon name="brain" size={20} color="#3b82f6" />
+                    <Text variant="bodyMedium" style={styles.imageTitle}>
+                      AI Diagnostic Heatmap
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => navigation.navigate("ImageView", { imageUrl: result.gradCamUrl, title: "AI Heatmap" })}>
+                    <Image source={{ uri: result.gradCamUrl }} style={[styles.analysisImage, styles.heatmapImage]} resizeMode="contain" />
+                  </TouchableOpacity>
+                  <Text variant="bodySmall" style={styles.heatmapNote}>
+                    Red areas show AI focus regions
+                  </Text>
+                </View>
+              )}
+            </View>
+
             {result.recommendations?.length > 0 && (
               <View style={styles.recommendations}>
                 <Text variant="titleMedium" style={styles.recommendationsTitle}>
@@ -468,5 +493,45 @@ const styles = StyleSheet.create({
   recommendationText: {
     flex: 1,
     color: "#374151",
+  },
+  imageSection: {
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 12,
+  },
+  imageCard: {
+    backgroundColor: "#f9fafb",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
+  },
+  imageHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+    gap: 8,
+  },
+  imageTitle: {
+    fontWeight: "500",
+    color: "#374151",
+  },
+  analysisImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 6,
+    backgroundColor: "#f3f4f6",
+  },
+  heatmapImage: {
+    borderWidth: 2,
+    borderColor: "rgba(59, 130, 246, 0.3)",
+  },
+  heatmapNote: {
+    color: "#6b7280",
+    marginTop: 6,
+    fontSize: 12,
+    fontStyle: "italic",
   },
 });

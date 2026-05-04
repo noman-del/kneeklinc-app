@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { View, StyleSheet, ScrollView, RefreshControl, Image, TouchableOpacity } from "react-native";
 import { Card, Text, ProgressBar, Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -243,19 +243,52 @@ export default function ProgressScreen({ navigation }: any) {
                 {analysis.recommendations?.length > 0 && (
                   <>
                     <Button mode="text" onPress={() => setExpandedId(expandedId === analysis.id ? null : analysis.id)} icon={expandedId === analysis.id ? "chevron-up" : "chevron-down"} style={styles.expandButton}>
-                      {expandedId === analysis.id ? "Hide" : "View"} Recommendations
+                      {expandedId === analysis.id ? "Hide" : "View"} Details
                     </Button>
 
                     {expandedId === analysis.id && (
-                      <View style={styles.recommendations}>
-                        {analysis.recommendations.map((rec: string, idx: number) => (
-                          <View key={idx} style={styles.recommendationItem}>
-                            <Icon name="check-circle" size={18} color="#10b981" />
-                            <Text variant="bodySmall" style={styles.recommendationText}>
-                              {rec}
-                            </Text>
+                      <View style={styles.expandedContent}>
+                        {/* AI Analysis Images */}
+                        <View style={styles.imageSection}>
+                          <Text variant="titleMedium" style={styles.sectionTitle}>
+                            AI Diagnostic Heatmap
+                          </Text>
+
+                          {/* Heatmap */}
+                          {analysis.gradCamUrl && (
+                            <View style={styles.imageCard}>
+                              <View style={styles.imageHeader}>
+                                <Icon name="brain" size={20} color="#3b82f6" />
+                                <Text variant="bodyMedium" style={styles.imageTitle}>
+                                  AI Diagnostic Heatmap
+                                </Text>
+                              </View>
+                              <TouchableOpacity onPress={() => navigation.navigate("ImageView", { imageUrl: analysis.gradCamUrl, title: "AI Heatmap" })}>
+                                <Image source={{ uri: analysis.gradCamUrl }} style={[styles.analysisImage, styles.heatmapImage]} resizeMode="contain" />
+                              </TouchableOpacity>
+                              <Text variant="bodySmall" style={styles.heatmapNote}>
+                                Red areas show AI focus regions
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+
+                        {/* Recommendations */}
+                        <View style={styles.recommendationsSection}>
+                          <Text variant="titleMedium" style={styles.sectionTitle}>
+                            Recommendations
+                          </Text>
+                          <View style={styles.recommendations}>
+                            {analysis.recommendations.map((rec: string, idx: number) => (
+                              <View key={idx} style={styles.recommendationItem}>
+                                <Icon name="check-circle" size={18} color="#10b981" />
+                                <Text variant="bodySmall" style={styles.recommendationText}>
+                                  {rec}
+                                </Text>
+                              </View>
+                            ))}
                           </View>
-                        ))}
+                        </View>
                       </View>
                     )}
                   </>
@@ -419,5 +452,51 @@ const styles = StyleSheet.create({
   recommendationText: {
     flex: 1,
     color: "#374151",
+  },
+  expandedContent: {
+    marginTop: 12,
+  },
+  imageSection: {
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 12,
+  },
+  imageCard: {
+    backgroundColor: "#f9fafb",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 12,
+  },
+  imageHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+    gap: 8,
+  },
+  imageTitle: {
+    fontWeight: "500",
+    color: "#374151",
+  },
+  analysisImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 6,
+    backgroundColor: "#f3f4f6",
+  },
+  heatmapImage: {
+    borderWidth: 2,
+    borderColor: "rgba(59, 130, 246, 0.3)",
+  },
+  heatmapNote: {
+    color: "#6b7280",
+    marginTop: 6,
+    fontSize: 12,
+    fontStyle: "italic",
+  },
+  recommendationsSection: {
+    marginTop: 8,
   },
 });

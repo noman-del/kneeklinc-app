@@ -19,6 +19,9 @@ import MessagesScreen from "../screens/main/MessagesScreen";
 import ProfileScreen from "../screens/main/ProfileScreen";
 import BookAppointmentScreen from "../screens/main/BookAppointmentScreen";
 import ConversationScreen from "../screens/main/ConversationScreen";
+import IoTSensorScreen from "../screens/main/IoTSensorScreen";
+import ImageViewScreen from "../screens/main/ImageViewScreen";
+import KneeDataScreen from "../screens/main/KneeDataScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,10 +72,25 @@ function MainTabs() {
         }}
       />
       <Tab.Screen
+        name="IoTSensor"
+        component={IoTSensorScreen}
+        options={{
+          tabBarLabel: "IoT Monitor",
+          tabBarIcon: ({ color, size }) => <Icon name="chip" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
         name="Progress"
         component={ProgressScreen}
         options={{
           tabBarIcon: ({ color, size }) => <Icon name="chart-line" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Knee Data"
+        component={KneeDataScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Icon name="database" size={size} color={color} />,
         }}
       />
       <Tab.Screen
@@ -150,6 +168,7 @@ export default function AppNavigator() {
           <Stack.Screen name="MainTabs" component={MainTabs} />
           <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} />
           <Stack.Screen name="Conversation" component={ConversationScreen} />
+          <Stack.Screen name="ImageView" component={ImageViewScreen} />
         </>
       )}
     </Stack.Navigator>

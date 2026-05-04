@@ -58,3 +58,36 @@ npm start
 - Scan QR code (iOS: Camera app, Android: Expo Go scanner)
 
 Done!
+
+---
+
+## Features
+
+### 🏥 Core Features
+
+- **AI X-ray Analysis**: Upload knee X-rays for OA detection
+- **Progress Tracking**: Monitor treatment progress over time
+- **Appointments**: Book and manage doctor appointments
+- **Messaging**: Communicate with healthcare providers
+- **Profile Management**: Update patient information
+
+### 🔌 IoT Knee Monitoring (NEW!)
+
+- **Real-time Sensor Data**: Monitor knee angle and temperature
+- **ESP32/ESP8266 Support**: Connect to IoT devices via WiFi
+- **Automatic Status Detection**: Normal, Mild OA, Moderate OA, Severe
+- **Live Dashboard**: Visual metrics with color-coded indicators
+
+**See [IOT-SETUP.md](./IOT-SETUP.md) for complete IoT setup guide**
+
+---
+
+## Tech Stack
+
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Axios
+- React Native Paper
+- IoT Integration (ESP32/ESP8266)
